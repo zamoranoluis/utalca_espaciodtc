@@ -1,0 +1,116 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: db
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    env_file:
+      - .env
+    command: >
+      bash -c "composer install && php artisan key:generate && php artisan migrate && chmod +x ./seeder.sh && ./seeder.sh && php-fpm"
+    networks:
+      - access_postgresql
+      - access_laravel
+
+  nginx:
+    image: nginx:1.25-alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - public_access
+      - access_laravel
+
+  db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - access_postgresql
+
+  mysql:
+    image: mysql:8.0
+    expose:
+      - '3306'
+    command: --default-authentication-plugin=caching_sha2_password
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_CHARACTER_SET_SERVER=utf8mb4
+      - MYSQL_COLLATION_SERVER=utf8mb4_unicode_ci
+    volumes:
+      - 'mysql_data:/var/lib/mysql'
+    healthcheck:
+      test: [ 'CMD', 'mysqladmin', 'ping', '-h', 'localhost' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - access_mysql
+
+  moodle:
+    image: bitnami/moodle:4.5
+    ports:
+      - '9000:8080'
+      - '9443:8443'
+    environment:
+      - MOODLE_DATABASE_TYPE=mysqli
+      - MOODLE_DATABASE_HOST=mysql
+      - MOODLE_DATABASE_PORT_NUMBER=3306
+      - MOODLE_DATABASE_USER=${MYSQL_USER}
+      - MOODLE_DATABASE_NAME=${MYSQL_DATABASE}
+      - MOODLE_DATABASE_PASSWORD=${MYSQL_PASSWORD}
+      - ALLOW_EMPTY_PASSWORD=no
+      - MOODLE_USERNAME=${MOODLE_USERNAME}
+      - MOODLE_PASSWORD=${MOODLE_PASSWORD}
+      - MOODLE_EMAIL=${MOODLE_EMAIL}
+      - MOODLE_SITE_NAME=Espacio DTC+
+      - BITNAMI_DEBUG=true
+      - MOODLE_LANG=es
+      - APACHE_HTTP_PORT_NUMBER=8080
+      - APACHE_HTTPS_PORT_NUMBER=8443
+      - PHP_MEMORY_LIMIT=512M
+      - PHP_MAX_EXECUTION_TIME=300
+    volumes:
+      - moodle_data:/bitnami/moodle
+      - moodledata_data:/bitnami/moodledata
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - access_mysql
+      - public_access
+
+volumes:
+  postgres_data:
+  mysql_data:
+  moodle_data:
+  moodledata_data:
+
+networks:
+  access_postgresql:
+    internal: true
+  access_mysql:
+    internal: true
+  access_laravel:
+    internal: true
+  public_access:
+    driver: bridge
