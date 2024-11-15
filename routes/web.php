@@ -1,5 +1,9 @@
 <?php
 
-use Livewire\Volt\Volt;
+use App\Livewire\Autenticacion\IniciarSesion;
+use App\Livewire\Autenticacion\VerificacionDeIdentidad;
 
-Volt::route('/', 'publica.inicio');
+Route::get('/autenticacion/iniciar-sesion',
+    IniciarSesion::class)->name('iniciar-sesion');
+Route::get('/autenticacion/verificacion-de-identidad',
+    VerificacionDeIdentidad::class)->name('verificacion-de-identidad');

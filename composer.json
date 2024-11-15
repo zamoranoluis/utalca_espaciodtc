@@ -9,10 +9,11 @@
         "php": "^8.2",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
-        "livewire/volt": "^1.7",
-        "lorisleiva/laravel-actions": "^2.9"
+        "livewire/livewire": "^3.6",
+        "php-flasher/flasher-toastr-laravel": "^2.1"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.5",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^3.0",
         "laravel/pail": "^1.1",
