@@ -4,9 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+        @assets
         <link href="{{ asset('css/global.css') }}" rel="stylesheet">
         <link href="{{ asset('css/popup.css') }}" rel="stylesheet">
         <link href="{{ asset('css/autenticacion.css') }}" rel="stylesheet">
+        @endassets
 
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/*.css', 'resources/js/app.js'])
