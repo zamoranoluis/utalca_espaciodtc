@@ -1,0 +1,61 @@
+.autenticacion__body {
+    margin: 0;
+    padding: 0;
+    background-image: url("../imagenes/fondo.webp");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.autenticacion__body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.autenticacion__centrar {
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+@media (min-width: 1000px) {
+    .autenticacion__popup__grid {
+        min-width: 50dvw;
+        max-width: 50dvw;
+        min-height: 50dvh;
+        max-height: 50dvh;
+        grid-template-columns: 5dvw 40dvw 5dvw;
+        grid-template-rows: 10dvh 40dvh;
+    }
+
+    .autenticacion__popup__grid__contenido {
+        grid-template-columns: 50dvw;
+        grid-template-rows: 30dvh 10dvh;
+    }
+}
+
+/*
+Reciclamos el form-popup pero modificamos las dimenciones
+ */
+@media (max-width: 1000px) {
+    .autenticacion__popup__grid {
+        min-width: 90dvw;
+        max-width: 90dvw;
+        min-height: 55dvh;
+        max-height: 55dvh;
+        grid-template-columns: 5dvw 80dvw 5dvw;
+        grid-template-rows: 10dvh 45dvh;
+    }
+
+    .autenticacion__popup__grid__contenido {
+        grid-template-columns: 90dvw;
+        grid-template-rows: 35dvh 10dvh;
+    }
+}
