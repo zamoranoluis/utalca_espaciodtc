@@ -6,9 +6,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
-class Anadir extends Component
+class Mutar extends Component
 {
-    public $modo = 'anadir';
     public $id;
 
     public $email;
@@ -33,8 +32,8 @@ class Anadir extends Component
 
     public function editarUsuario()
     {
-        if($this->id != null){
-            User::where("id","=",$this->id)->update([
+        if ($this->id != null) {
+            User::where('id', '=', $this->id)->update([
                 'email' => $this->email,
                 'nombres' => $this->nombres,
                 'apellidos' => $this->apellidos,
@@ -44,13 +43,12 @@ class Anadir extends Component
         }
     }
 
-    public function mount($id)
+    public function mount(?string $id = null)
     {
         $usuario = User::where('id', $id)->first();
 
-        if($usuario){
+        if ($usuario) {
             $this->id = $usuario->id;
-            $this->modo = 'editar';
             $this->email = $usuario->email;
             $this->nombres = $usuario->nombres;
             $this->apellidos = $usuario->apellidos;
@@ -59,6 +57,6 @@ class Anadir extends Component
 
     public function render()
     {
-        return view('livewire.privada.usuarios.anadir');
+        return view('livewire.privada.usuarios.mutar');
     }
 }

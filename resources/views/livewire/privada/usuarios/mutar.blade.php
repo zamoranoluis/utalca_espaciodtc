@@ -4,7 +4,7 @@
         <h1>Crear usuario</h1>
     </div>
     <form
-        @if($modo == 'anadir')
+        @if($id != null)
             wire:submit="crearUsuario()"
         @else
             wire:submit="editarUsuario()"
@@ -25,7 +25,7 @@
             <input wire:model="apellidos">
         </div>
 
-        @if($modo == 'anadir')
+        @if($id == null)
             <div>
                 <div>Contrasena</div>
                 <input wire:model="password">
@@ -33,7 +33,7 @@
         @endif
 
         <button type="submit">
-            @if($modo == 'anadir')
+            @if($id == null)
                 Anadir usuario
             @else
                 Editar usuario
