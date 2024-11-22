@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('apellidos');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('path_foto');
             $table->rememberToken();
             $table->timestamps();
         });

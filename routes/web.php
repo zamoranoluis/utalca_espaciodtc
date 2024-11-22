@@ -7,8 +7,8 @@ use App\Http\Middleware\VerificarAutenticado;
 use App\Livewire\Autenticacion\IniciarSesion;
 use App\Livewire\Autenticacion\VerificacionDeIdentidad;
 use App\Livewire\Privada\Dashboard;
-use App\Livewire\Privada\Usuarios\Mutar;
 use App\Livewire\Privada\Usuarios\Lista;
+use App\Livewire\Privada\Usuarios\Mutar;
 
 Route::middleware([
     RedirigirSiPasoIniciarSesion::class,
@@ -31,7 +31,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/plataforma/inicio',
         Dashboard::class)->name('dashboard');
-    Route::get('/usuarios',Lista::class);
-    Route::get('/usuarios/anadir',Mutar::class);
-    Route::get('/usuarios/editar/{id}',Mutar::class);
+    Route::get('/usuarios', Lista::class);
+    Route::get('/usuarios/anadir', Mutar::class);
+    Route::get('/usuarios/editar/{id}', Mutar::class);
 });

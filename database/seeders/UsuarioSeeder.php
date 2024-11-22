@@ -15,6 +15,7 @@ class UsuarioSeeder extends Seeder
             'nombres' => env('ADMIN_NAMES'),
             'apellidos' => env('ADMIN_LASTNAMES'),
             'password' => Hash::make(env('ADMIN_PASSWORD')),
+            'path_foto' => '',
         ]);
     }
 }
