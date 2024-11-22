@@ -29,4 +29,10 @@ Route::middleware([
 ])->group(function () {
     Route::get('/plataforma/inicio',
         Dashboard::class)->name('dashboard');
+    Route::get('/usuarios',
+        \App\Livewire\Privada\Usuarios\Lista::class);
+    Route::get('/usuarios/anadir',
+        \App\Livewire\Privada\Usuarios\Anadir::class);
+    Route::get('/usuarios/editar/{id}',
+        \App\Livewire\Privada\Usuarios\Anadir::class);
 });
