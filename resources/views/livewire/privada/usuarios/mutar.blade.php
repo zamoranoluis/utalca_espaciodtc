@@ -76,9 +76,10 @@
             {{ $message }}
             @enderror
             </p>
+
         </div>
 
-        <button type="submit">
+        <button  wire:loading.attr="disabled" type="submit">
             @if($id == null)
                 Anadir usuario
             @else

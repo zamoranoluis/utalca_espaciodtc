@@ -34,12 +34,12 @@ class Mutar extends Component
 
         // Create the directory if it doesn't exist
         $directorio = storage_path('app/public/fotos');
-        if (!file_exists($directorio)) {
+        if (! file_exists($directorio)) {
             mkdir($directorio, 0755, true);
         }
 
         // Generate a unique file name
-        $nombreArchivo = uniqid('usuario_') . '.webp';
+        $nombreArchivo = uniqid('usuario_').'.webp';
 
         // Get the image's extension to handle different formats
         $extension = strtolower($this->foto->getClientOriginalExtension());
@@ -55,20 +55,20 @@ class Mutar extends Component
                 break;
             default:
                 toastr()->error('Tipo de archivo no permitido');
+
                 return;
         }
 
-        imagewebp($image, $directorio . '/' . $nombreArchivo, 50);
+        imagewebp($image, $directorio.'/'.$nombreArchivo, 50);
 
         imagedestroy($image);
 
-        if (!file_exists(public_path('storage'))) {
+        if (! file_exists(public_path('storage'))) {
             Artisan::call('storage:link');
         }
 
         return "storage/fotos/$nombreArchivo";
     }
-
 
     public function existePorEmail(): bool
     {
@@ -106,10 +106,7 @@ class Mutar extends Component
         toastr()->success('Usuario creado correctamente');
     }
 
-    public function editarUsuario()
-    {
-
-    }
+    public function editarUsuario() {}
 
     public function mount(?string $id = null)
     {

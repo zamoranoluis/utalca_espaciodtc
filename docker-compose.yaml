@@ -12,7 +12,7 @@ services:
     env_file:
       - .env
     command: >
-      bash -c "composer install && php artisan key:generate && php artisan migrate && chmod +x ./seeder.sh && ./seeder.sh && php-fpm"
+      bash -c "composer install && php artisan key:generate && php artisan storage:link && php artisan migrate && chmod +x ./seeder.sh && ./seeder.sh && php-fpm"
     networks:
       - access_postgresql
       - access_laravel
