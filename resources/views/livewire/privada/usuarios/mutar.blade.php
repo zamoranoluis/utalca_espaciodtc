@@ -11,7 +11,7 @@
         @if($id == null)
             wire:submit="crearUsuario()"
         @else
-            wire:submit="editarUsuario()"
+            wire:submit="editarUsuario(editarFoto,editarContrasena)"
         @endif
     >
 

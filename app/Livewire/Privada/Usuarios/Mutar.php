@@ -13,7 +13,7 @@ class Mutar extends Component
 {
     use WithFileUploads;
 
-    public int $id;
+    public string $id;
 
     public string $email;
 
@@ -34,12 +34,12 @@ class Mutar extends Component
 
         // Create the directory if it doesn't exist
         $directorio = storage_path('app/public/fotos');
-        if (! file_exists($directorio)) {
+        if (!file_exists($directorio)) {
             mkdir($directorio, 0755, true);
         }
 
         // Generate a unique file name
-        $nombreArchivo = uniqid('usuario_').'.webp';
+        $nombreArchivo = uniqid('usuario_') . '.webp';
 
         // Get the image's extension to handle different formats
         $extension = strtolower($this->foto->getClientOriginalExtension());
@@ -59,11 +59,11 @@ class Mutar extends Component
                 return;
         }
 
-        imagewebp($image, $directorio.'/'.$nombreArchivo, 50);
+        imagewebp($image, $directorio . '/' . $nombreArchivo, 50);
 
         imagedestroy($image);
 
-        if (! file_exists(public_path('storage'))) {
+        if (!file_exists(public_path('storage'))) {
             Artisan::call('storage:link');
         }
 
@@ -106,7 +106,46 @@ class Mutar extends Component
         toastr()->success('Usuario creado correctamente');
     }
 
-    public function editarUsuario() {}
+    public function editarUsuario(bool $editarFoto, bool $editarContrasena)
+    {
+        $this->validate([
+            'email' => config('reglas_verificacion.usuario.email'),
+            'nombres' => config('reglas_verificacion.usuario.nombres'),
+            'apellidos' => config('reglas_verificacion.usuario.apellidos')
+        ]);
+
+        $usuario = User::where('id', $this->id)->first();
+        if ($this->existePorEmail() && $usuario->email != $this->email) {
+            toastr()->error('Ya existe un usuario con ese email');
+        } else {
+            $usuario->email = $this->email;
+            $usuario->nombres = $this->nombres;
+            $usuario->apellidos = $this->apellidos;
+
+
+            if ($editarFoto) {
+                $this->validate([
+                    'foto' => config('reglas_verificacion.usuario.foto')
+                ]);
+
+                $pathFoto = $this->transformarEnWebpYGuardarDirectorioPublico();
+                $usuario->path_foto = $pathFoto;
+                $this->path_foto = $pathFoto;
+            }
+
+            if ($editarContrasena) {
+                $this->validate([
+                    'password' => config('reglas_verificacion.usuario.password')
+                ]);
+
+                $usuario->password = Hash::make($this->password);
+            }
+
+            $usuario->save();
+            toastr()->success('Usuario actualizado correctamente');
+        }
+
+    }
 
     public function mount(?string $id = null)
     {
